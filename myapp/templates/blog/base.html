@@ -1,0 +1,51 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ko">
+	<head>
+		<meta charset="UTF-8">
+		<title>{% block title %}Django Blog{% endblock %}</title>
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+		<link rel="stylesheet" href="{% static 'css/blog.css' %}">
+	</head>
+<body>
+	<header class="site-header"> <!--	header -->
+		<nav class="navbar navbar-expand-md navbar-dark bg-dark"> 
+			<div class="container"> 
+				<a class="navbar-brand mr-4" href="{% url 'home' %}">My Blog</a>
+				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation"> <!--	navbar-toggler -->
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="collapse navbar-collapse" id="navbarToggle">
+					<div class="navbar-nav">
+						<a class="nav-item nav-link" href="{% url 'home' %}">Home</a>
+						<a class="nav-item nav-link" href="{% url 'post_list' %}">게시판</a>
+						{% if user.is_authenticated %}
+						<a class="nav-item nav-link" href="{% url 'post_create' %}">게시</a>
+						{% endif %}
+					</div>
+					<div class="navbar-nav ml-auto">
+						{% if user.is_authenticated %}
+						<span class="nav-item nav-link">Welcome, {{ user.username }}</span>
+						<form id = "logout-form" action="{% url 'logout' %}" method="post">
+							{% csrf_token %}
+							<a class="logout" href="{% url 'logout' %}">로그아웃</a>
+						</form>
+						{% else %}
+						<a class="nav-item nav-link" href="{% url 'login' %}">로그인</a>
+						<a class="nav-item nav-link" href="{% url 'signup' %}">가입</a>
+						{% endif %}
+				</div>
+			</div>
+		</nav>
+	</header>
+	<main role="main" class="container"> <!--	main -->
+		{% block content %}
+		{% endblock %}
+	</main>
+	<footer class="site-footer"> <!--	footer -->
+		<div class="container">
+			<p>&copy; 2024 My Blog. All rights reserved.</p>
+		</div>
+	</footer>
+</body>
+</html>

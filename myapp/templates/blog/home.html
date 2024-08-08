@@ -1,0 +1,17 @@
+{% extends "blog/base.html" %}
+
+{% block content %}
+<div class="content-wrapper">
+  <h2>Home</h2>
+  <p>Welcome to my blog. This is the home page.</p>
+  <h3>최근 게시물</h3>
+  <ul>
+	{% for post in recent_posts %}
+	<li><a href="{% url 'post_detail' post.pk %}">{{ post.title }}</a></li>
+	{% empty %}
+	<li>No posts yet.</li>
+	{% endfor %}
+  </ul>
+</div>
+{% endblock %}
+
