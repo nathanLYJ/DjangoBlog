@@ -1,8 +1,8 @@
 """
-URL configuration for mysite project.
+URL configuration for config project.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/5.0/topics/http/urls/
+    https://docs.djangoproject.com/en/5.1/topics/http/urls/
 Examples:
 Function views
     1. Add an import:  from my_app import views
@@ -16,10 +16,8 @@ Including another URLconf
 """
 
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-	path('', include('myapp.urls')),  # blog.urls로 이동
-    path('accounts/', include('django.contrib.auth.urls')), 
 ]
