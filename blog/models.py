@@ -23,6 +23,14 @@ class Category(models.Model):
         return self.name
 
 
+# 태그 모델
+class Tag(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+
+    def __str__(self):
+        return self.name
+
+
 # 포스트 모델
 class Post(models.Model):
     title = models.CharField(max_length=200)
@@ -35,18 +43,10 @@ class Post(models.Model):
     )
     tags = models.ManyToManyField(Tag, related_name="posts", blank=True)
     likes = models.PositiveIntegerField(default=0)
-    dislikes = models.PositiveIntegerField(default=0)
+    dislikes = models.makemigrationsPositiveIntegerField(default=0)
 
     def __str__(self):
         return self.title
-
-
-# 태그 모델
-class Tag(models.Model):
-    name = models.CharField(max_length=100, unique=True)
-
-    def __str__(self):
-        return self.name
 
 
 # 댓글 모델
