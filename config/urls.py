@@ -6,4 +6,5 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("", MainPageView.as_view(), name="main"),
     path("blog/", include("blog.urls")),
+    path("accounts/", include("accounts.urls")),
 ]
