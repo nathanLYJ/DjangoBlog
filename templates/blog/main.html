@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GjangoBlog</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+<header>
+    <h1 class="text-2xl font-bold mt-4">환영합니다! 블로그에 오신 것을 환영합니다.</h1>
+</header>
+
+<nav class="mt-4">
+    <ul class="flex gap-4 justify-center">
+        <li>
+            <a class="text-blue-500 underline" href="{% url 'blog:post_list' %}">블로그 입장</a> 
+        </li>
+        <li>
+            <a class="text-blue-500 underline" href="{% url 'login' %}">로그인</a>
+        </li>
+        <li>
+            <a class="text-blue-500 underline" href="{% url 'signup' %}">회원 가입</a>
+        </li>
+    </ul>
+</nav>
+
+<main class="mt-8">
+    <section>
+        <h2 class="text-xl font-semibold">블로그 소개</h2>
+        <p class="mt-2">여기는 여러분의 생각과 이야기를 공유하는 블로그입니다. 자유롭게 글을 작성하고 다른 사람들과 소통해 보세요.</p>
+    </section>
+</main>
+<footer>
+    <p>&copy; 2024 Nathan's Blog. All rights reserved.</p>
+</footer>
+
+</body>
+</html>
+
