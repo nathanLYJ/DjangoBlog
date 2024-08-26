@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+    <h2>{{ view.title }}</h2> 
+    
+    <form action="" method="post" enctype="multipart/form-data" class="p-4 border rounded shadow">
+        {% csrf_token %}
+        
+        {% if form.errors %}
+            <div class="alert alert-danger">
+                <ul>
+                {% for field in form %}
+                    {% for error in field.errors %}
+                        <li>{{ field.label }}: {{ error }}</li>
+                    {% endfor %}
+                {% endfor %}
+                {% for error in form.non_field_errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+        
+        <table class="table table-striped">
+            {{ form.as_table }}
+        </table>
+        
+        <input type="submit" value="Save" class="btn btn-primary mt-2">
+    </form>
+</div>
+{% endblock %}
