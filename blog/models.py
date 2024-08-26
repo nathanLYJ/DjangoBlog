@@ -41,9 +41,11 @@ class Post(models.Model):
     category = models.ForeignKey(
         Category, on_delete=models.SET_NULL, null=True, related_name="posts"
     )
-    tags = models.ManyToManyField(Tag, related_name="posts", blank=True)
-    likes = models.PositiveIntegerField(default=0)
-    dislikes = models.makemigrationsPositiveIntegerField(default=0)
+    tags = models.ManyToManyField(
+        "Tag", related_name="posts", blank=True
+    )  # Tag 모델을 문자열로 참조
+    likes = models.PositiveIntegerField(default=0)  # 여기서 수정되었습니다
+    dislikes = models.PositiveIntegerField(default=0)  # 여기서 수정되었습니다
 
     def __str__(self):
         return self.title
