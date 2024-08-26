@@ -32,12 +32,6 @@
 │   ├── serializers.py
 │   └── migrations
 │       └── __init__.py
-├── /core
-│   ├── __init__.py
-│   ├── middleware.py
-│   ├── utils.py
-│   └── management
-│       └── __init__.py
 ├── manage.py
 └── /static
     ├── /css
