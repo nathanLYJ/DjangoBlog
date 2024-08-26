@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="grid grid-cols-4 gap-4 p-4 m-6">
+    <section>
+        <h2>게시글 목록</h2>
+        <ul>
+            {% for post in post_list %}
+                <li class="mb-2">
+                    <a href="{% url 'blog:post_detail' post.pk %}" class="text-blue-500 hover:underline">
+                        {{ post.title }}
+                    </a>
+                    <p>{{ post.content|truncatewords:30 }}</p> <!-- 게시글 내용 일부만 표시 -->
+                    <p>작성일: {{ post.created_at }}</p>
+                    <p>조회수 {{ post.view_count }}회 · {{ post.created_at|timesince }} 전</p>
+                    <p>작성자: {{ post.author }}</p>
+
+                    <!-- 태그 추가 -->
+                    {% for tag in post.tags.all %}
+                        <a href="" class="text-gray-500 hover:underline">#{{ tag.name }}</a>
+                    {% endfor %}
+                </li>
+            {% empty %}
+                <li>게시글이 없습니다.</li>
+            {% endfor %}
+        </ul>
+    </section>
+</div>
+{% endblock %}
+
+
