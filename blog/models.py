@@ -5,6 +5,8 @@ from django.db import models
 # 프로필 모델
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile")
+    introduction = models.TextField(blank=True)
+    image = models.ImageField(upload_to="profile_images", blank=True)
     real_name = models.CharField(max_length=100)
     nickname = models.CharField(max_length=50, unique=True)
     address = models.CharField(max_length=255, blank=True, null=True)
@@ -34,8 +36,14 @@ class Tag(models.Model):
 # 포스트 모델
 class Post(models.Model):
     title = models.CharField(max_length=200)
-    content = models.TextField()
+    content = models.TextField(max_length=100)
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name="posts")
+    thumb_image = models.ImageField(
+        upload_to="blog/images/%Y/%m/%d/", blank=True, null=True
+    )
+    file_upload = models.FileField(
+        upload_to="blog/files/%Y/%m/%d/", blank=True, null=True
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     category = models.ForeignKey(
@@ -49,6 +57,9 @@ class Post(models.Model):
 
     def __str__(self):
         return self.title
+
+    def get_absolute_url(self):
+        return f"/blog/{self.pk}/"
 
 
 # 댓글 모델
