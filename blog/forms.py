@@ -10,6 +10,8 @@ class PostForm(forms.ModelForm):
             "title",
             "content",
             "thumb_image",
+            "category",
+            "tags",
             "file_upload",
         ]
 
