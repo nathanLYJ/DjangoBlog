@@ -18,16 +18,16 @@
             <ul class="flex justify-end gap-2">
                 {% if user.is_authenticated %}
                     <li class="inline-block ml-3 border border-gray-300 rounded px-2 py-[5px] text-xs"><a href="{% url 'blog:post_new' %}">글쓰기</a></li>
-                    <li class="inline-block ml-3 border border-gray-300 rounded px-2 py-[5px] text-xs"><a href="{% url 'profile' %}">프로필</a></li> 
+                    <li class="inline-block ml-3 border border-gray-300 rounded px-2 py-[5px] text-xs"><a href="{% url 'accounts:profile' %}">프로필</a></li> 
                     <li class="inline-block ml-3 border border-gray-300 rounded px-2 py-[5px] text-xs">
-                        <form id="logout-form" action="{% url 'logout' %}" method="post" style="display: inline;">
+                        <form id="logout-form" action="{% url 'accounts:logout' %}" method="post" style="display: inline;">
                             {% csrf_token %}
                             <button type="submit" class="btn btn-link" style="border: none; background: none; color: inherit; cursor: pointer;">로그아웃</button>
                         </form>
                     </li>
                 {% else %}
-                    <li class="inline-block ml-3 border border-gray-300 rounded px-2 py-[5px] text-xs"><a href="{% url 'login' %}">로그인</a></li> 
-                    <li class="inline-block ml-3 border border-gray-300 rounded px-2 py-[5px] text-xs"><a href="{% url 'signup' %}">회원가입</a></li>
+                    <li class="inline-block ml-3 border border-gray-300 rounded px-2 py-[5px] text-xs"><a href="{% url 'accounts:user_login' %}">로그인</a></li> 
+                    <li class="inline-block ml-3 border border-gray-300 rounded px-2 py-[5px] text-xs"><a href="{% url 'accounts:user_signup' %}">회원가입</a></li>
                 {% endif %}
             </ul>
         </nav>
