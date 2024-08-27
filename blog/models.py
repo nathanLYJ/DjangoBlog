@@ -88,6 +88,3 @@ class PostTag(models.Model):
 
     class Meta:
         unique_together = ("post", "tag")  # 복합 기본 키 설정
-
-
-# 포스트 모델
