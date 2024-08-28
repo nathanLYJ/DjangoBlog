@@ -3,15 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
     <title>{% block title %}GjangoBlog{% endblock %}</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="{% static 'css/accounts_style.css' %}" rel="stylesheet"> 
 </head>
 <body class="flex flex-col min-h-screen">
     <header class="py-4 flex justify-between items-center border-b border-gray-300 px-4">
         <h1 class="text-2xl font-bold"><a href="{% url 'blog:post_list' %}">Blog</a></h1>
-        <form action="{% url 'blog:post_search' %}" method="get" class="flex">
-            <input class="border border-gray-300 rounded-l px-4 py-2 text-sm" type="text" name="q" value="{{ request.GET.q }}" placeholder="검색어를 입력하세요">
-            <button class="bg-blue-500 text-white rounded-r px-4 py-2 text-sm hover:bg-blue-600" type="submit">검색</button>
+        <form action="{% url 'blog:post_search' %}" method="get" class="flex items-center">
+            <input class="border border-gray-300 rounded-l px-4 h-10 text-sm mt-0 leading-normal" type="text" name="q" value="{{ request.GET.q }}" placeholder="검색어를 입력하세요">
+            <button class="bg-blue-500 text-white rounded-r px-4 h-10 text-sm hover:bg-blue-600 leading-normal" type="submit">검색</button>
         </form>
         <nav>
             <ul class="flex gap-2">
