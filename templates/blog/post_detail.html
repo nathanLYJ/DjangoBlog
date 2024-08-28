@@ -1,16 +1,61 @@
 {% extends 'base.html' %}
+
 {% block content %}
-<p>{{post.title}}</p>
-<p>{{post.content}}</p>
-{% if post.file_upload %}
-<video src="{{post.file_upload.url}}" controls></video>
-{% endif %}
+<div class="container mx-auto mt-8 px-4">
+    <article class="bg-white shadow-md rounded-lg overflow-hidden">
+        <div class="p-6">
+            <h1 class="text-3xl font-bold mb-4">{{ post.title }}</h1>
+            <div class="flex items-center text-gray-600 text-sm mb-4">
+                <span>작성자: {{ post.user }}</span>
+                <span class="mx-2">•</span>
+                <span>작성일: {{ post.created_at|date:"Y-m-d H:i" }}</span>
+                <span class="mx-2">•</span>
+                <span>조회수: {{ post.view_count }}</span>
+            </div>
+            <div class="prose max-w-none">
+                {{ post.content|linebreaks }}
+            </div>
+        </div>
 
-<hr>
+        {% if post.file_upload %}
+        <div class="p-6 bg-gray-100">
+            <h2 class="text-xl font-semibold mb-2">첨부 파일</h2>
+            {% with file_extension=post.file_upload.url|slice:"-3:" %}
+                {% if file_extension == 'mp4' or file_extension == 'ebm' %}
+                    <video src="{{ post.file_upload.url }}" controls class="w-full"></video>
+                {% else %}
+                    <a href="{{ post.file_upload.url }}" class="text-blue-600 hover:underline" target="_blank">
+                        {{ post.file_upload.name }}
+                    </a>
+                {% endif %}
+            {% endwith %}
+        </div>
+        {% endif %}
 
-<a href="{% url 'blog:post_list' %}">목록</a>
-{% if user == post.author %}
-<a href="{% url 'blog:post_edit' post.pk %}">수정</a>
-<a href="{% url 'blog:post_delete' post.pk %}">삭제</a>
-{% endif %}
+        {% if post.tags.all %}
+        <div class="px-6 py-4 bg-gray-50">
+            <h2 class="text-xl font-semibold mb-2">태그</h2>
+            {% for tag in post.tags.all %}
+                <a href="{% url 'blog:tag_detail' tag.slug %}" class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">#{{ tag.name }}</a>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </article>
+
+    <div class="mt-6 flex justify-between items-center">
+        <a href="{% url 'blog:post_list' %}" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded">
+            목록
+        </a>
+        {% if user == post.author %}
+        <div>
+            <a href="{% url 'blog:post_edit' post.pk %}" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded mr-2">
+                수정
+            </a>
+            <a href="{% url 'blog:post_delete' post.pk %}" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded">
+                삭제
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</div>
 {% endblock %}
