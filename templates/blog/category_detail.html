@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}카테고리: {{ category.name }} - GjangoBlog{% endblock %}
+
+{% block content %}
+<h1>{{ category.name }}</h1>
+<p>{{ category.description }}</p>
+
+<h2>Posts in this category:</h2>
+<ul>
+    {% for post in posts %}
+        <li><a href="{% url 'blog:post_detail' post.pk %}">{{ post.title }}</a></li>
+    {% endfor %}
+</ul>
+{% endblock %}
