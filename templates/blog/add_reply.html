@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %}답글 추가 - GjangoBlog{% endblock %}
+
+{% block content %}
+  <h2>답글 추가</h2>
+  <div class="parent-comment">
+    <p>{{ parent_comment.content }}</p>
+    <p class="comment-meta">작성자: {{ parent_comment.user.profile.nickname|default:parent_comment.user.username }}</p>
+  </div>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">답글 추가</button>
+  </form>
+{% endblock %}
