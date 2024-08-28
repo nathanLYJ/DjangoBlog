@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block title %}댓글 추가 - GjangoBlog{% endblock %}
+
+{% block content %}
+  <h2>댓글 추가</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">댓글 추가</button>
+  </form>
+{% endblock %}
