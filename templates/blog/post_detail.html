@@ -15,6 +15,9 @@
                 <span>조회수: {{ post.view_count }}</span>
             </div>
             <div class="prose max-w-none">
+                {{ post.tags }}
+            </div>
+            <div class="prose max-w-none">
                 {{ post.content|linebreaks }}
             </div>
         </div>
@@ -24,26 +27,12 @@
             <h2 class="text-xl font-semibold mb-2">첨부 파일</h2>
             {% with file_extension=post.file_upload.url|slice:"-3:" %}
                 {% if file_extension == 'mp4' or file_extension == 'webm' %}
-                    <!-- 비디오 파일 처리 로직 추가 -->
                 {% else %}
                     <a href="{{ post.file_upload.url }}" class="text-blue-600 hover:underline" target="_blank">
                         {{ post.file_upload.name }}
                     </a>
                 {% endif %}
             {% endwith %}
-        </div>
-        {% endif %}
-
-        {% if post.tags.all %}
-        <div class="px-6 py-4 bg-gray-50">
-            <h2 class="text-xl font-semibold mb-2">태그</h2>
-            <div class="flex flex-wrap">
-                {% for tag in post.tags.all %}
-                <a href="{% url 'blog:tag_detail' tag.slug %}" class="inline-block bg-blue-100 text-blue-800 rounded-full px-3 py-1 text-sm font-semibold mr-2 mb-2 hover:bg-blue-200 transition duration-300">
-                    {{ tag }}
-                </a>
-                {% endfor %}
-            </div>
         </div>
         {% endif %}
     </article>
