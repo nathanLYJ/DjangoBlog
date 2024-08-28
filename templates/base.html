@@ -10,10 +10,10 @@
 <body>
     <header class="py-2 flex justify-around items-center border-b border-gray-300">
         <h1 class="text-xl font-bold"><a href="{% url 'blog:post_list' %}">Blog</a></h1>
-        <form action="" method="get">
+        <form action="{% url 'blog:post_search' %}" method="get">
             <input class="border border-gray-300 rounded-xl px-4 py-[5px] text-xs" type="text" name="q" value="{{ request.GET.q }}">
             <input class="bg-blue-200 text-white rounded px-2 py-[5px] text-xs" type="submit" value="검색">
-        </form>
+        </form>                
         <nav>
             <ul class="flex justify-end gap-2">
                 {% if user.is_authenticated %}
