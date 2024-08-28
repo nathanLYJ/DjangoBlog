@@ -58,14 +58,4 @@
     </footer>
 </body>
 <script src="{% static 'js/tag_management.js' %}"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        var initialTags = [
-            {% for tag in form.instance.tags.all %}
-                "{{ tag|escapejs }}",
-            {% endfor %}
-        ];
-        initializeTags(initialTags);
-    });
-</script>
 </html>
