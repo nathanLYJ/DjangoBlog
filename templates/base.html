@@ -2,36 +2,36 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GjangoBlog</title>
+    <title>{% block title %}GjangoBlog{% endblock %}</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    <header class="py-2 flex justify-around items-center border-b border-gray-300">
-        <h1 class="text-xl font-bold"><a href="{% url 'blog:post_list' %}">Blog</a></h1>
-        <form action="{% url 'blog:post_search' %}" method="get">
-            <input class="border border-gray-300 rounded-xl px-4 py-[5px] text-xs" type="text" name="q" value="{{ request.GET.q }}">
-            <input class="bg-blue-200 text-white rounded px-2 py-[5px] text-xs" type="submit" value="검색">
-        </form>                
+<body class="flex flex-col min-h-screen">
+    <header class="py-4 flex justify-between items-center border-b border-gray-300 px-4">
+        <h1 class="text-2xl font-bold"><a href="{% url 'blog:post_list' %}">Blog</a></h1>
+        <form action="{% url 'blog:post_search' %}" method="get" class="flex">
+            <input class="border border-gray-300 rounded-l px-4 py-2 text-sm" type="text" name="q" value="{{ request.GET.q }}" placeholder="검색어를 입력하세요">
+            <button class="bg-blue-500 text-white rounded-r px-4 py-2 text-sm hover:bg-blue-600" type="submit">검색</button>
+        </form>
         <nav>
-            <ul class="flex justify-end gap-2">
+            <ul class="flex gap-2">
                 {% if user.is_authenticated %}
-                    <li class="inline-block ml-3 border border-gray-300 rounded px-2 py-[5px] text-xs"><a href="{% url 'blog:post_new' %}">글쓰기</a></li>
-                    <li class="inline-block ml-3 border border-gray-300 rounded px-2 py-[5px] text-xs"><a href="{% url 'accounts:profile' %}">프로필</a></li> 
-                    <li class="inline-block ml-3 border border-gray-300 rounded px-2 py-[5px] text-xs">
-                        <form id="logout-form" action="{% url 'accounts:logout' %}" method="post" style="display: inline;">
+                    <li><a href="{% url 'blog:post_new' %}" class="inline-block border border-gray-300 rounded px-4 py-2 text-sm hover:bg-gray-100">글쓰기</a></li>
+                    <li><a href="{% url 'accounts:profile' %}" class="inline-block border border-gray-300 rounded px-4 py-2 text-sm hover:bg-gray-100">프로필</a></li>
+                    <li>
+                        <form action="{% url 'accounts:logout' %}" method="post" class="inline">
                             {% csrf_token %}
-                            <button type="submit" class="btn btn-link" style="border: none; background: none; color: inherit; cursor: pointer;">로그아웃</button>
+                            <button type="submit" class="inline-block border border-gray-300 rounded px-4 py-2 text-sm hover:bg-gray-100">로그아웃</button>
                         </form>
                     </li>
                 {% else %}
-                    <li class="inline-block ml-3 border border-gray-300 rounded px-2 py-[5px] text-xs"><a href="{% url 'accounts:user_login' %}">로그인</a></li> 
-                    <li class="inline-block ml-3 border border-gray-300 rounded px-2 py-[5px] text-xs"><a href="{% url 'accounts:user_signup' %}">회원가입</a></li>
+                    <li><a href="{% url 'accounts:user_login' %}" class="inline-block border border-gray-300 rounded px-4 py-2 text-sm hover:bg-gray-100">로그인</a></li>
+                    <li><a href="{% url 'accounts:user_signup' %}" class="inline-block border border-gray-300 rounded px-4 py-2 text-sm hover:bg-gray-100">회원가입</a></li>
                 {% endif %}
             </ul>
         </nav>
     </header>
+
     {% if messages %}
     <div class="container mx-auto mt-4">
         {% for message in messages %}
@@ -41,10 +41,12 @@
         {% endfor %}
     </div>
     {% endif %}
-    <main>
+
+    <main class="flex-grow container mx-auto mt-8 px-4">
         {% block content %}{% endblock %}
     </main>
-    <footer>
+
+    <footer class="mt-8 py-4 bg-gray-100 text-center">
         <p>&copy; 2024 Nathan's Blog. All rights reserved.</p>
     </footer>
 </body>

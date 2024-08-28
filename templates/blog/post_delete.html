@@ -1,11 +1,24 @@
 {% extends 'base.html' %}
-{% block content %}
-<h1>글 삭제</h1>
 
-<form method="post">
-    {% csrf_token %}
-    <p>글을 삭제하시겠습니까?</p>
-    <input type="submit" value="네!" class="btn btn-primary">
-    <a href="{% url 'blog:post_detail' post.pk %}" class="btn btn-secondary">아니요!</a>]
-</form>
+{% block title %}글 삭제 확인 - GjangoBlog{% endblock %}
+
+{% block content %}
+<div class="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
+    <h1 class="text-2xl font-bold mb-6 text-center text-gray-800">글 삭제</h1>
+    
+    <p class="mb-6 text-center text-gray-600">정말로 이 글을 삭제하시겠습니까?</p>
+    
+    <div class="flex justify-center space-x-4">
+        <form method="post" action="">
+            {% csrf_token %}
+            <button type="submit" class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition duration-300">
+                예, 삭제합니다
+            </button>
+        </form>
+        
+        <a href="{% url 'blog:post_detail' post.pk %}" class="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400 transition duration-300">
+            아니요, 취소합니다
+        </a>
+    </div>
+</div>
 {% endblock %}

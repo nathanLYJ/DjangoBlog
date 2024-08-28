@@ -1,32 +1,56 @@
 {% extends 'base.html' %}
+
+{% block title %}회원가입 - GjangoBlog{% endblock %}
+
 {% block content %}
-<div class="max-w-md mx-auto">
-    <form action="" method="post" class="space-y-4 p-6 bg-white shadow-md rounded-lg">
-        {% csrf_token %}
-        {% for field in form %}
-            {% if field.name != 'password_based_authentication' %}
-                <div class="space-y-2">
-                    <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-gray-700">
-                        {{ field.label }}
-                    </label>
-                    {{ field }}
-                    {% if field.help_text %}
-                        <p class="text-xs text-gray-500">{{ field.help_text }}</p>
+<div class="container mx-auto mt-8 px-4">
+    <div class="max-w-md mx-auto bg-white shadow-md rounded-lg overflow-hidden">
+        <div class="p-6">
+            <h1 class="text-2xl font-bold mb-6 text-center">회원가입</h1>
+            
+            <form method="post" class="space-y-4">
+                {% csrf_token %}
+                
+                {% if form.non_field_errors %}
+                    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                        {% for error in form.non_field_errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                
+                {% for field in form %}
+                    {% if field.name != 'password_based_authentication' %}
+                        <div class="space-y-2">
+                            <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-gray-700">
+                                {{ field.label }}
+                            </label>
+                            {{ field }}
+                            {% if field.help_text %}
+                                <p class="text-xs text-gray-500">{{ field.help_text }}</p>
+                            {% endif %}
+                            {% for error in field.errors %}
+                                <p class="text-red-500 text-xs italic">{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div style="display: none;">
+                            {{ field }}
+                        </div>
                     {% endif %}
-                    {% for error in field.errors %}
-                        <p class="text-xs text-red-500">{{ error }}</p>
-                    {% endfor %}
+                {% endfor %}
+                
+                <div>
+                    <button type="submit" class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                        회원가입
+                    </button>
                 </div>
-            {% else %}
-                <div style="display: none;">
-                    {{ field }}
-                </div>
-            {% endif %}
-        {% endfor %}
-        <button type="submit" 
-                class="w-full py-2 px-4 bg-indigo-600 text-white rounded-lg shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-            회원가입
-        </button>
-    </form>
+            </form>
+            
+            <div class="mt-4 text-center">
+                <a href="{% url 'accounts:user_login' %}" class="text-sm text-blue-500 hover:text-blue-700">이미 계정이 있으신가요? 로그인</a>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}

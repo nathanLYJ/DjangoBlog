@@ -2,40 +2,37 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GjangoBlog</title>
+    <title>GjangoBlog에 오신 것을 환영합니다</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-<header>
-    <h1 class="text-2xl font-bold mt-4">귀한 손님 오셨네요!! 블로그에 오신 것을 환영합니다.</h1>
-</header>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center">
+    <div class="bg-white p-8 rounded-lg shadow-md max-w-md w-full">
+        <h1 class="text-2xl font-bold mb-6 text-center text-gray-800">귀한 손님 오셨네요!! 블로그에 오신 것을 환영합니다.</h1>
 
-<nav class="mt-4">
-    <ul class="flex gap-4 justify-center">
-        <li>
-            <a class="text-blue-500 underline" href="{% url 'blog:post_list' %}">블로그 입장</a> 
-        </li>
-        <li>
-            <a class="text-blue-500 underline" href="{% url 'accounts:user_login' %}">로그인</a>
-        </li>
-        <li>
-            <a class="text-blue-500 underline" href="{% url 'accounts:user_signup' %}">회원 가입</a>
-        </li>
-    </ul>
-</nav>
+        <div class="space-y-4">
+            <a href="{% url 'blog:post_list' %}" class="block w-full text-center py-2 px-4 bg-blue-500 text-white rounded hover:bg-blue-600 transition duration-300">
+                블로그 입장
+            </a>
 
-<main class="mt-8">
-    <section>
-        <h2 class="text-xl font-semibold">블로그 소개</h2>
-        <p class="mt-2">여기는 여러분의 생각과 이야기를 공유하는 블로그입니다. 자유롭게 글을 작성하고 다른 사람들과 소통해 보세요.</p>
-    </section>
-</main>
-<footer>
-    <p>&copy; 2024 Nathan's Blog. All rights reserved.</p>
-</footer>
+            {% if user.is_authenticated %}
+                <form id="logout-form" action="{% url 'accounts:logout' %}" method="post" class="block w-full">
+                    {% csrf_token %}
+                    <button type="submit" class="block w-full text-center border border-gray-300 rounded px-4 py-2 text-sm bg-red-500 text-white hover:bg-red-600">로그아웃</button>
+                </form>
+            {% else %}
+                <a href="{% url 'accounts:user_login' %}" class="block w-full text-center border border-gray-300 rounded px-4 py-2 text-sm bg-green-500 text-white hover:bg-green-600">로그인</a>
+                <a href="{% url 'accounts:user_signup' %}" class="block w-full text-center border border-gray-300 rounded px-4 py-2 text-sm bg-yellow-500 text-white hover:bg-yellow-600">회원가입</a>
+            {% endif %}
+        </div>
 
+        <section class="mt-8">
+            <h2 class="text-xl font-semibold mb-4 text-gray-700">블로그 소개</h2>
+            <p class="text-gray-600">
+                여기는 여러분의 생각과 이야기를 공유하는 블로그입니다. 자유롭게 글을 작성하고 다른 사람들과 소통해 보세요.
+            </p>
+        </section>
+    </div>
 </body>
 </html>
 

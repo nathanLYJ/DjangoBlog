@@ -17,32 +17,28 @@ class MainPageView(TemplateView):
     template_name = "blog/main.html"
 
 
-# 포스트 리스트
 class PostListView(ListView):
     model = Post
     template_name = "blog/post_list.html"
-    context_object_name = "posts"
-    paginate_by = 10  # 페이지당 10개의 포스트
+    context_object_name = "post_list"
+    ordering = ["-created_at"]
+    paginate_by = 10
 
 
-# 포스트 상세
 class PostDetailView(DetailView):
     model = Post
     template_name = "blog/post_detail.html"
+    context_object_name = "post"
 
     def get_object(self):
-        with transaction.atomic():
-            obj = self.model.objects.select_for_update().get(pk=self.kwargs["pk"])
-            obj.view_count = F("view_count") + 1
-            obj.save()
-
-            # 업데이트된 객체를 다시 가져옵니다
-            obj.refresh_from_db()
-
+        obj = super().get_object()
+        Post.objects.filter(pk=obj.pk).update(view_count=F("view_count") + 1)
         return obj
 
+    def get_queryset(self):
+        return super().get_queryset().prefetch_related("tags")
 
-# 포스트 생성
+
 class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
     form_class = PostForm
@@ -50,86 +46,79 @@ class PostCreateView(LoginRequiredMixin, CreateView):
     template_name = "blog/form.html"
 
     def form_valid(self, form):
-        form.instance.user = self.request.user
-        return super().form_valid(form)
+        with transaction.atomic():
+            form.instance.user = self.request.user
+            self.object = form.save()
+
+            if "category" in form.cleaned_data:
+                self.object.category = form.cleaned_data["category"]
+
+            if "tags" in form.cleaned_data:
+                self.object.tags.set(form.cleaned_data["tags"])
+
+            self.object.save()
+
+            return super().form_valid(form)
 
 
-# 포스트 수정
 class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Post
     form_class = PostForm
     template_name = "blog/form.html"
 
     def test_func(self):
-        post = self.get_object()
-        return self.request.user == post.user
+        return self.request.user == self.get_object().user
 
     def get_success_url(self):
         return reverse_lazy("blog:post_detail", kwargs={"pk": self.object.pk})
 
+    def form_valid(self, form):
+        response = super().form_valid(form)
 
-# 포스트 삭제
+        # tags 처리
+        if "tags" in form.cleaned_data:
+            self.object.tags.set(form.cleaned_data["tags"])
+
+        return response
+
+
 class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Post
     success_url = reverse_lazy("blog:post_list")
     template_name = "blog/post_delete.html"
 
     def test_func(self):
-        post = self.get_object()
-        return self.request.user == post.user
+        return self.request.user == self.get_object().user
 
 
-# 카테고리 리스트
 class CategoryListView(ListView):
     model = Category
     template_name = "blog/category_list.html"
     context_object_name = "categories"
 
 
-# 카테고리 상세
-class CategoryDetailView(DetailView):
+class PaginatedDetailView(DetailView):
+    paginate_by = 5
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        posts = self.object.posts.all().order_by("-created_at")
+        paginator = Paginator(posts, self.paginate_by)
+        page_number = self.request.GET.get("page")
+        context["posts"] = paginator.get_page(page_number)
+        return context
+
+
+class CategoryDetailView(PaginatedDetailView):
     model = Category
     template_name = "blog/category_detail.html"
     context_object_name = "category"
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["posts"] = self.object.posts.all()
-        return context
 
-
-# 태그 리스트
-class TagListView(ListView):
-    model = Tag
-    template_name = "blog/tag_list.html"
-    context_object_name = "tags"
-
-
-# 태그 상세
-class TagDetailView(DetailView):
+class TagDetailView(PaginatedDetailView):
     model = Tag
     template_name = "blog/tag_detail.html"
     context_object_name = "tag"
-    paginate_by = 10
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-
-        posts = self.object.posts.all().order_by("-created_at")
-
-        paginator = Paginator(posts, self.paginate_by)
-        page_number = self.request.GET.get("page")
-        page_obj = paginator.get_page(page_number)
-
-        context["posts"] = page_obj
-        context["total_posts"] = posts.count()
-
-        related_tags = (
-            Tag.objects.filter(posts__in=posts).exclude(pk=self.object.pk).distinct()
-        )
-        context["related_tags"] = related_tags
-
-        return context
 
 
 class PostSearchView(ListView):
@@ -154,15 +143,3 @@ def blog_comment_delete(request, pk):
     if request.user == comment.user:
         comment.delete()
     return redirect("blog:post_detail", pk=comment.post.pk)
-
-
-@login_required
-def blog_subscribe(request, post_id, user_id):
-    # 구독 로직 구현
-    pass
-
-
-@login_required
-def blog_unsubscribe(request, post_id, user_id):
-    # 구독 취소 로직 구현
-    pass
