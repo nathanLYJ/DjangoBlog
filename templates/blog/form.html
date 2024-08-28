@@ -46,19 +46,10 @@
                 <input type="text" id="tag-input" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="태그 입력 후 Enter">
                 <button type="button" id="add-tag" class="ml-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">추가</button>
             </div>
-            <div id="tag-list" class="mt-2 flex flex-wrap">
-                {% if form.instance.pk %}
-                    {% for tag in form.instance.tags.all %}
-                        <span class="bg-blue-100 text-blue-800 text-sm font-semibold mr-2 mb-2 px-2.5 py-0.5 rounded">
-                            {{ tag }}
-                            <button type="button" class="ml-1 text-blue-600 hover:text-blue-800" onclick="removeTag(this, '{{ tag }}')">×</button>
-                        </span>
-                    {% endfor %}
-                {% endif %}
-            </div>
-            <input type="hidden" name="tags" id="tags-hidden" value="{{ form.instance.tags.all|join:"," }}">
+            <div id="tag-list" class="mt-2 flex flex-wrap"></div>
+            <input type="hidden" name="tags" id="tags-hidden" value="{{ form.instance.tags.all|join:',' }}">
         </div>
-        
+    
         <div class="flex items-center justify-between">
             <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
                 저장
@@ -70,7 +61,4 @@
     </form>
 </div>
 
-<meta name="csrf-token" content="{{ csrf_token }}">
-
-<script src="{% static 'js/tag_management.js' %}"></script>
 {% endblock %}

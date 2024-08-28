@@ -101,18 +101,16 @@ class PostForm(BaseForm, ProfanityFilterMixin):
     def clean_content(self):
         return self.clean_text_content("content")
 
-    def clean(self):
-        cleaned_data = super().clean()
-        title = cleaned_data.get("title")
-        content = cleaned_data.get("content")
+    def save(self, commit=True):
+        instance = super().save(commit=False)
+        if commit:
+            instance.save()
 
-        if title and content:
-            if len(title) < 5:
-                self.add_error("title", "제목은 5글자 이상이어야 합니다.")
-            if len(content) < 10:
-                self.add_error("content", "내용은 10글자 이상이어야 합니다.")
+        # 태그 저장
+        if "tags" in self.cleaned_data:
+            instance.tags.set(self.cleaned_data["tags"])
 
-        return cleaned_data
+        return instance
 
 
 class CommentForm(BaseForm, ProfanityFilterMixin):

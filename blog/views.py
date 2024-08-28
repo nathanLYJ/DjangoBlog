@@ -24,6 +24,9 @@ class PostListView(ListView):
     ordering = ["-created_at"]
     paginate_by = 10
 
+    def get_queryset(self):
+        return super().get_queryset().prefetch_related("tags")
+
 
 class PostDetailView(DetailView):
     model = Post
@@ -49,6 +52,15 @@ class PostCreateView(LoginRequiredMixin, CreateView):
         form.instance.user = self.request.user
         return super().form_valid(form)
 
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        tags = self.request.POST.get("tags", "").split(",")
+        self.object.tags.clear()
+        for tag_name in tags:
+            tag, created = Tag.objects.get_or_create(name=tag_name.strip())
+            self.object.tags.add(tag)
+        return response
+
 
 class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Post
@@ -63,6 +75,15 @@ class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
     def form_valid(self, form):
         return super().form_valid(form)
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        tags = self.request.POST.get("tags", "").split(",")
+        self.object.tags.clear()
+        for tag_name in tags:
+            tag, created = Tag.objects.get_or_create(name=tag_name.strip())
+            self.object.tags.add(tag)
+        return response
 
 
 class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):

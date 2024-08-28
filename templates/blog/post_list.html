@@ -1,42 +1,36 @@
 {% extends 'base.html' %}
-
-{% block title %}게시글 목록 - GjangoBlog{% endblock %}
-
 {% block content %}
-<div class="container mx-auto p-4">
+<div class="container mx-auto mt-8 px-4">
     <h1 class="text-3xl font-bold mb-6">게시글 목록</h1>
-
     {% if post_list %}
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {% for post in post_list %}
-                <div class="bg-white shadow-md rounded-lg overflow-hidden">
-                    <div class="p-4">
-                        <h2 class="text-xl font-semibold mb-2">
-                            <a href="{% url 'blog:post_detail' post.pk %}" class="text-blue-600 hover:underline">
-                                {{ post.title }}
-                            </a>
-                        </h2>
-                        <p class="text-gray-600 mb-4">{{ post.content|truncatewords:30 }}</p>
-                        <div class="text-sm text-gray-500">
-                            <p>작성자: {{ post.user }}</p>
-                            <p>작성일: {{ post.created_at|date:"Y-m-d H:i" }}</p>
-                            <p>조회수: {{ post.view_count }}회 · {{ post.created_at|timesince }} 전</p>
-                        </div>
-                        {% if post.tags.all %}
-                            <div class="mt-2">
-                                {% for tag in post.tags.all %}
-                                    <a href="{% url 'blog:tag_detail' tag.slug %}" class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2 hover:bg-gray-300">
-                                        #{{ tag.name }}
-                                    </a>
-                                {% endfor %}
-                            </div>
-                        {% endif %}
-                    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        {% for post in post_list %}
+        <div class="bg-white shadow-md rounded-lg overflow-hidden">
+            <div class="p-4">
+                <h2 class="text-xl font-semibold mb-2">
+                    <a href="{% url 'blog:post_detail' post.pk %}" class="text-blue-600 hover:underline">
+                        {{ post.title }}
+                    </a>
+                </h2>
+                <p>{{ post.content|truncatewords:30 }}</p>
+                <div class="text-sm text-gray-500">
+                    <p>작성자: {{ post.user }}</p>
+                    <p>작성일: {{ post.created_at|date:"Y-m-d H:i" }}</p>
+                    <p>조회수: {{ post.view_count }}회 · {{ post.created_at|timesince }} 전</p>
                 </div>
-            {% endfor %}
+                {% if post.tags.all %}
+                <div class="mt-2">
+                    {% for tag in post.tags.all %}
+                    <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">#{{ tag.name }}</span>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
         </div>
+        {% endfor %}
+    </div>
     {% else %}
-        <p class="text-center text-gray-600">게시글이 없습니다.</p>
+    <p>게시글이 없습니다.</p>
     {% endif %}
 </div>
 {% endblock %}

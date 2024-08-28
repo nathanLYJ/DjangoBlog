@@ -53,7 +53,7 @@ class Post(models.Model):
     category = models.ForeignKey(
         Category, on_delete=models.SET_NULL, null=True, related_name="posts"
     )
-    tags = models.ManyToManyField(Tag, blank=True)
+    tags = models.ManyToManyField(Tag, related_name="posts", blank=True)
     likes = models.PositiveIntegerField(default=0)
     view_count = models.PositiveIntegerField(default=0)
 
