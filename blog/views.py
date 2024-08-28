@@ -46,19 +46,8 @@ class PostCreateView(LoginRequiredMixin, CreateView):
     template_name = "blog/form.html"
 
     def form_valid(self, form):
-        with transaction.atomic():
-            form.instance.user = self.request.user
-            self.object = form.save()
-
-            if "category" in form.cleaned_data:
-                self.object.category = form.cleaned_data["category"]
-
-            if "tags" in form.cleaned_data:
-                self.object.tags.set(form.cleaned_data["tags"])
-
-            self.object.save()
-
-            return super().form_valid(form)
+        form.instance.user = self.request.user
+        return super().form_valid(form)
 
 
 class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
@@ -73,13 +62,7 @@ class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         return reverse_lazy("blog:post_detail", kwargs={"pk": self.object.pk})
 
     def form_valid(self, form):
-        response = super().form_valid(form)
-
-        # tags 처리
-        if "tags" in form.cleaned_data:
-            self.object.tags.set(form.cleaned_data["tags"])
-
-        return response
+        return super().form_valid(form)
 
 
 class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
@@ -97,7 +80,10 @@ class CategoryListView(ListView):
     context_object_name = "categories"
 
 
-class PaginatedDetailView(DetailView):
+class CategoryDetailView(DetailView):
+    model = Category
+    template_name = "blog/category_detail.html"
+    context_object_name = "category"
     paginate_by = 5
 
     def get_context_data(self, **kwargs):
@@ -109,16 +95,19 @@ class PaginatedDetailView(DetailView):
         return context
 
 
-class CategoryDetailView(PaginatedDetailView):
-    model = Category
-    template_name = "blog/category_detail.html"
-    context_object_name = "category"
-
-
-class TagDetailView(PaginatedDetailView):
+class TagDetailView(DetailView):
     model = Tag
     template_name = "blog/tag_detail.html"
     context_object_name = "tag"
+    paginate_by = 5
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        posts = self.object.posts.all().order_by("-created_at")
+        paginator = Paginator(posts, self.paginate_by)
+        page_number = self.request.GET.get("page")
+        context["posts"] = paginator.get_page(page_number)
+        return context
 
 
 class PostSearchView(ListView):
@@ -138,8 +127,48 @@ class PostSearchView(ListView):
 
 
 @login_required
+def add_comment(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    if request.method == "POST":
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.post = post
+            comment.user = request.user  # User 모델을 직접 사용
+            comment.save()
+            return redirect("blog:post_detail", pk=post.pk)
+    else:
+        form = CommentForm()
+    return render(request, "blog/add_comment.html", {"form": form})
+
+
+@login_required
+def add_reply(request, post_pk, comment_pk):
+    post = get_object_or_404(Post, pk=post_pk)
+    parent_comment = get_object_or_404(Comment, pk=comment_pk)
+    if request.method == "POST":
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            reply = form.save(commit=False)
+            reply.post = post
+            reply.user = request.user
+            reply.parent_comment = parent_comment
+            reply.save()
+            return redirect("blog:post_detail", pk=post_pk)
+    else:
+        form = CommentForm()
+    return render(
+        request, "blog/add_reply.html", {"form": form, "parent_comment": parent_comment}
+    )
+
+
+@login_required
 def blog_comment_delete(request, pk):
     comment = get_object_or_404(Comment, pk=pk)
-    if request.user == comment.user:
+    if request.user == comment.user:  # User 모델로 비교
+        post_pk = comment.post.pk
         comment.delete()
-    return redirect("blog:post_detail", pk=comment.post.pk)
+        return redirect("blog:post_detail", pk=post_pk)
+    else:
+        # 권한이 없는 경우의 처리
+        return redirect("blog:post_detail", pk=comment.post.pk)
