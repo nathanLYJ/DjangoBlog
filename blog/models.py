@@ -19,34 +19,27 @@ class UserProfile(models.Model):
 class Category(models.Model):
     name = models.CharField(max_length=100)
     slug = models.SlugField(max_length=100, unique=True, allow_unicode=True)
-    description = models.TextField(blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.name
-
-    def get_absolute_url(self):
-        return reverse("blog:category_detail", kwargs={"slug": self.slug})
 
     class Meta:
         verbose_name_plural = "Categories"
 
 
 class Tag(models.Model):
-    name = models.CharField(max_length=50, unique=True)
-    slug = models.SlugField(max_length=50, unique=True, allow_unicode=True, blank=True)
+    name = models.CharField(max_length=50)
+    slug = models.SlugField(max_length=50, allow_unicode=True)
 
     def __str__(self):
-        return f"#{self.name}"
+        return self.name
 
     def save(self, *args, **kwargs):
-        if not self.slug:
-            self.slug = slugify(self.name, allow_unicode=True)
+        self.slug = slugify(self.name, allow_unicode=True)
         super().save(*args, **kwargs)
 
-    def get_absolute_url(self):
-        return reverse("blog:tag_detail", kwargs={"slug": self.slug})
+    class Meta:
+        unique_together = ["name", "slug"]
 
 
 class Post(models.Model):
