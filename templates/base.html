@@ -16,6 +16,11 @@
             <button class="bg-blue-500 text-white rounded-r px-4 h-10 text-sm hover:bg-blue-600 leading-normal" type="submit">검색</button>
         </form>
         <nav>
+            <ul>
+                {% for category in categories %}
+                    <li><a href="{% url 'blog:category_detail' category.pk %}">{{ category.name }}</a></li>
+                {% endfor %}
+            </ul>
             <ul class="flex gap-2">
                 {% if user.is_authenticated %}
                     <li><a href="{% url 'blog:post_new' %}" class="inline-block border border-gray-300 rounded px-4 py-2 text-sm hover:bg-gray-100">글쓰기</a></li>
