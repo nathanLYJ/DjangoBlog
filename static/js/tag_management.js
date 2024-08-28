@@ -2,44 +2,40 @@ document.addEventListener('DOMContentLoaded', function() {
     const tagInput = document.getElementById('tag-input');
     const addTagButton = document.getElementById('add-tag');
     const tagList = document.getElementById('tag-list');
-    const tagsField = document.querySelector('input[name="tags"]');
+    const hiddenTagsInput = document.getElementById('tags-hidden');
 
-    function addTag() {
-        const tagName = tagInput.value.trim();
-        if (tagName) {
-            const tagSpan = document.createElement('span');
-            tagSpan.className = 'bg-blue-100 text-blue-800 text-sm font-semibold mr-2 mb-2 px-2.5 py-0.5 rounded';
-            tagSpan.innerHTML = `#${tagName} <button type="button" class="ml-1 text-blue-600 hover:text-blue-800" onclick="removeTag(this)">×</button>`;
-            tagList.appendChild(tagSpan);
-            tagInput.value = '';
-            updateTagsField();
-        }
+    function addTag(tagName) {
+        if (tagName.trim() === '') return;
+
+        const tagSpan = document.createElement('span');
+        tagSpan.className = 'bg-blue-100 text-blue-800 text-sm font-semibold mr-2 mb-2 px-2.5 py-0.5 rounded';
+        tagSpan.innerHTML = `
+            ${tagName}
+            <button type="button" class="ml-1 text-blue-600 hover:text-blue-800" onclick="removeTag(this, '${tagName}')">×</button>
+        `;
+        tagList.appendChild(tagSpan);
+        updateHiddenInput();
+        tagInput.value = '';
     }
 
+    window.removeTag = function(button, tagName) {
+        button.parentElement.remove();
+        updateHiddenInput();
+    };
+
+    function updateHiddenInput() {
+        const tags = Array.from(tagList.children).map(span => span.textContent.trim());
+        hiddenTagsInput.value = tags.join(',');
+    }
+
+    addTagButton.addEventListener('click', () => addTag(tagInput.value));
     tagInput.addEventListener('keypress', function(e) {
         if (e.key === 'Enter') {
             e.preventDefault();
-            addTag();
+            addTag(this.value);
         }
     });
 
-    addTagButton.addEventListener('click', addTag);
-
-    window.removeTag = function(button) {
-        button.parentElement.remove();
-        updateTagsField();
-    }
-
-    function updateTagsField() {
-        const tags = Array.from(tagList.children).map(span => span.textContent.trim().slice(1, -1));
-        tagsField.value = tags.join(',');
-    }
-
-    // 초기 태그 필드 업데이트
-    updateTagsField();
+    // 초기 태그 설정
+    updateHiddenInput();
 });
-
-// CSRF 토큰 처리 (필요한 경우)
-function getCsrfToken() {
-    return document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-}
