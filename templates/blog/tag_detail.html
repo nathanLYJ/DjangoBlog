@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mx-auto mt-8 px-4">
+    <h1 class="text-3xl font-bold mb-6">태그: #{{ tag.name }}</h1>
+    <p class="text-gray-600 mb-4">총 {{ total_posts }}개의 게시글</p>
+    
+    {% if related_tags %}
+    <div class="mb-6">
+        <h2 class="text-xl font-semibold mb-2">관련 태그:</h2>
+        {% for related_tag in related_tags %}
+            <a href="{% url 'blog:tag_detail' related_tag.slug %}" class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">#{{ related_tag.name }}</a>
+        {% endfor %}
+    </div>
+    {% endif %}
+    
+    <section class="mb-8">
+        <h2 class="text-2xl font-semibold mb-4">이 태그가 달린 게시글</h2>
+        {% if posts %}
+            <ul class="space-y-6">
+                {% for post in posts %}
+                    <li class="border-b pb-4">
+                        <a href="{% url 'blog:post_detail' post.pk %}" class="text-xl font-medium text-blue-600 hover:underline">
+                            {{ post.title }}
+                        </a>
+                        <p class="text-gray-600 mt-2">{{ post.content|truncatewords:30 }}</p>
+                        <div class="mt-2 text-sm text-gray-500">
+                            <span>작성자: {{ post.user }}</span>
+                            <span class="mx-2">·</span>
+                            <span>작성일: {{ post.created_at|date:"Y-m-d H:i" }}</span>
+                            <span class="mx-2">·</span>
+                            <span>조회수: {{ post.view_count }}</span>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+            
+            {% if posts.has_other_pages %}
+            <div class="pagination mt-6">
+                <span class="step-links">
+                    {% if posts.has_previous %}
+                        <a href="?page=1">&laquo; 첫 페이지</a>
+                        <a href="?page={{ posts.previous_page_number }}">이전</a>
+                    {% endif %}
+
+                    <span class="current">
+                        Page {{ posts.number }} of {{ posts.paginator.num_pages }}.
+                    </span>
+
+                    {% if posts.has_next %}
+                        <a href="?page={{ posts.next_page_number }}">다음</a>
+                        <a href="?page={{ posts.paginator.num_pages }}">마지막 페이지 &raquo;</a>
+                    {% endif %}
+                </span>
+            </div>
+            {% endif %}
+        {% else %}
+            <p class="text-gray-600">이 태그가 달린 게시글이 없습니다.</p>
+        {% endif %}
+    </section>
+</div>
+{% endblock %}
