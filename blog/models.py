@@ -4,18 +4,6 @@ from django.urls import reverse
 from django.utils.text import slugify
 
 
-class UserProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile")
-    introduction = models.TextField(blank=True)
-    image = models.ImageField(upload_to="profile_images", blank=True)
-    nickname = models.CharField(max_length=50, unique=True)
-    address = models.CharField(max_length=255, blank=True)
-    birth_date = models.DateField(blank=True, null=True)
-
-    def __str__(self):
-        return self.nickname or self.user.username
-
-
 class Category(models.Model):
     name = models.CharField(max_length=100)
     slug = models.SlugField(max_length=100, unique=True, allow_unicode=True)
@@ -28,24 +16,27 @@ class Category(models.Model):
 
 
 class Tag(models.Model):
-    name = models.CharField(max_length=50)
-    slug = models.SlugField(max_length=50, allow_unicode=True)
+    name = models.CharField(max_length=50, unique=True)
+    slug = models.SlugField(max_length=50, unique=True, allow_unicode=True)
 
     def __str__(self):
         return self.name
 
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.name, allow_unicode=True)
+        if not self.slug:
+            self.slug = slugify(self.name, allow_unicode=True)
         super().save(*args, **kwargs)
 
     class Meta:
-        unique_together = ["name", "slug"]
+        ordering = ["name"]
 
 
 class Post(models.Model):
     title = models.CharField(max_length=200)
     content = models.TextField()
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="posts")
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, null=False, related_name="posts"
+    )
     thumb_image = models.ImageField(upload_to="blog/images/%Y/%m/%d/", blank=True)
     file_upload = models.FileField(upload_to="blog/files/%Y/%m/%d/", blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
