@@ -1,47 +1,50 @@
 {% extends 'base.html' %}
-{% block title %}프로필 수정 - GjangoBlog{% endblock %}
+{% block title %}프로필 수정 - DjangoBlog{% endblock %}
+
 {% block content %}
-
 <div class="container mx-auto mt-8 px-4">
-    <div class="bg-white shadow-md rounded-lg overflow-hidden">
+    <div class="max-w-md mx-auto bg-white shadow-md rounded-lg overflow-hidden">
         <div class="p-6">
-            <h1 class="text-2xl font-bold mb-6">프로필 수정</h1>
+            <h1 class="text-2xl font-bold mb-6 text-center">프로필 수정</h1>
 
-            <form method="post" enctype="multipart/form-data">
+            <form method="post" enctype="multipart/form-data" class="space-y-4">
                 {% csrf_token %}
-                <div class="space-y-4">
-                    {% for field in form %}
-                        <div class="grid grid-cols-1 gap-4">
-                            <div>
-                                <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-gray-700">
-                                    {{ field.label }}
-                                </label>
-                                {{ field }}
-                                {% if field.help_text %}
-                                    <p class="mt-1 text-sm text-gray-500">{{ field.help_text }}</p>
-                                {% endif %}
-                                {% for error in field.errors %}
-                                    <p class="mt-1 text-sm text-red-600">{{ error }}</p>
-                                {% endfor %}
-                            </div>
+                {% for field in form %}
+                    <div class="grid grid-cols-1 gap-4">
+                        <div>
+                            <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-gray-700">
+                                {{ field.label }}
+                            </label>
+                            {{ field }}
+                            {% if field.help_text %}
+                                <p class="mt-1 text-sm text-gray-500">{{ field.help_text }}</p>
+                            {% endif %}
+                            {% for error in field.errors %}
+                                <p class="mt-1 text-sm text-red-600">{{ error }}</p>
+                            {% endfor %}
                         </div>
-                    {% endfor %}
-                </div>
+                    </div>
+                {% endfor %}
 
                 <div class="mt-6">
-                    <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
+                    <button type="submit" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                         프로필 업데이트
                     </button>
                 </div>
             </form>
+
+            <div class="mt-4 text-center">
+                <a href="{% url 'accounts:password_change' %}" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded">
+                    비밀번호 변경
+                </a>
+            </div>
         </div>
     </div>
 
-    <div class="mt-6">
+    <div class="mt-6 text-center">
         <a href="{% url 'accounts:profile' %}" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded">
             프로필로 돌아가기
         </a>
     </div>
 </div>
-
 {% endblock %}
