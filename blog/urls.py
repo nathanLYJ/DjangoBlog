@@ -26,10 +26,4 @@ urlpatterns = [
     path("tag/<str:slug>/", views.TagDetailView.as_view(), name="tag_detail"),
     path("search/", views.PostSearchView.as_view(), name="post_search"),
     path("comment/<int:pk>/delete/", views.blog_comment_delete, name="delete_comment"),
-    path("profile/", views.ProfileView.as_view(), name="profile"),
-    path(
-        "profile/update/<int:pk>/",
-        views.ProfileUpdateView.as_view(),
-        name="profile_update",
-    ),
 ]
