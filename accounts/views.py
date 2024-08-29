@@ -26,7 +26,6 @@ class CustomLoginView(LoginView):
     template_name = "accounts/user_login.html"
 
     def get_success_url(self):
-        # 로그인 성공 후 이동할 URL을 반환합니다.
         return reverse_lazy("blog:post_list")
 
     def form_invalid(self, form):
@@ -35,7 +34,3 @@ class CustomLoginView(LoginView):
 
 
 logout = LogoutView.as_view()
-
-
-def profile(request):
-    return render(request, "accounts/profile.html")
