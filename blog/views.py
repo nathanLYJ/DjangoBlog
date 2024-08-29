@@ -1,6 +1,6 @@
 from django.views.generic import TemplateView, ListView, DetailView
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Post, Category, Tag
+from .models import Post, Category, Tag, UserProfile
 from .forms import PostForm, CommentForm
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
@@ -193,3 +193,31 @@ def blog_comment_delete(request, pk):
     else:
         # 권한이 없는 경우의 처리
         return redirect("blog:post_detail", pk=comment.post.pk)
+
+
+class ProfileView(TemplateView):
+    template_name = "blog/profile.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["user"] = self.request.user
+        return context
+
+
+class ProfileUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = UserProfile
+    fields = ["introduction", "image", "nickname", "address", "birth_date", "password"]
+    template_name = "blog/profile_update.html"
+    success_url = reverse_lazy("blog:profile")
+
+    def test_func(self):
+        # 현재 사용자와 프로필의 사용자가 같은지 확인
+        return self.request.user == self.get_object().user
+
+    def form_valid(self, form):
+        form.instance.user.set_password(form.cleaned_data["password"])
+        form.instance.user.save()
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        return super().form_invalid(form)
