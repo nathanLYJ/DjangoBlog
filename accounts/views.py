@@ -1,11 +1,16 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.contrib.auth import login
-from django.views.generic import CreateView
-from django.contrib import messages
-from .forms import CustomUserCreationForm
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.models import User
+from django.contrib.auth.views import PasswordChangeView
+from django.views.generic import CreateView, TemplateView, UpdateView
+from django.contrib import messages
+from .forms import CustomUserCreationForm
+from .models import UserProfile
+from django.contrib.auth.views import PasswordChangeView as DjangoPasswordChangeView
 
 
 class UserSignupView(CreateView):
@@ -34,3 +39,39 @@ class CustomLoginView(LoginView):
 
 
 logout = LogoutView.as_view()
+
+
+class ProfileView(TemplateView):
+    template_name = "blog/profile.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["user"] = self.request.user
+        return context
+
+
+class ProfileUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = UserProfile
+    fields = ["introduction", "image", "nickname", "address", "birth_date"]
+    template_name = "blog/profile_update.html"
+    success_url = reverse_lazy("accounts:profile")
+
+    def get_object(self, queryset=None):
+        return get_object_or_404(UserProfile, user=self.request.user)
+
+    def test_func(self):
+        return True
+
+    def form_valid(self, form):
+        return super().form_valid(form)
+
+
+class CustomPasswordChangeView(LoginRequiredMixin, PasswordChangeView):
+    template_name = "accounts/password_change.html"
+    success_url = reverse_lazy(
+        "accounts:profile"
+    )  # 비밀번호 변경 후 프로필 페이지로 이동
+
+    def form_valid(self, form):
+        messages.success(self.request, "비밀번호가 성공적으로 변경되었습니다.")
+        return super().form_valid(form)
