@@ -2,6 +2,7 @@ from django import forms
 from django.core.exceptions import ValidationError
 from django.core.validators import FileExtensionValidator
 from .models import Post, Comment, Tag, Category
+from django.utils.text import slugify
 
 
 class ProfanityFilterMixin:
@@ -69,8 +70,8 @@ class PostForm(BaseForm, ProfanityFilterMixin):
     category = forms.ModelChoiceField(
         queryset=Category.objects.all(), empty_label="카테고리를 선택하세요"
     )
-    tags = forms.ModelMultipleChoiceField(
-        queryset=Tag.objects.all(), required=False, widget=forms.CheckboxSelectMultiple
+    tags = forms.CharField(
+        required=False, help_text="쉼표로 구분하여 태그를 입력하세요"
     )
     file_upload = forms.FileField(
         required=False,
@@ -89,7 +90,9 @@ class PostForm(BaseForm, ProfanityFilterMixin):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         if self.instance.pk:
-            self.fields["tags"].initial = self.instance.tags.all()
+            self.fields["tags"].initial = ", ".join(
+                tag.name for tag in self.instance.tags.all()
+            )
 
     def clean_file_upload(self):
         file = self.cleaned_data.get("file_upload")
@@ -101,14 +104,23 @@ class PostForm(BaseForm, ProfanityFilterMixin):
     def clean_content(self):
         return self.clean_text_content("content")
 
+    def clean_tags(self):
+        tags = self.cleaned_data.get("tags")
+        if tags:
+            return [tag.strip() for tag in tags.split(",") if tag.strip()]
+        return []
+
     def save(self, commit=True):
         instance = super().save(commit=False)
         if commit:
             instance.save()
 
         # 태그 저장
-        if "tags" in self.cleaned_data:
-            instance.tags.set(self.cleaned_data["tags"])
+        tags = self.cleaned_data.get("tags", [])
+        instance.tags.clear()
+        for tag_name in tags:
+            tag, created = Tag.objects.get_or_create(name=tag_name)
+            instance.tags.add(tag)
 
         return instance
 
@@ -144,6 +156,8 @@ class TagForm(BaseForm):
         if name.startswith("#"):
             name = name[1:]
         name = name.lower().strip()
+        if Tag.objects.filter(name=name).exists():
+            raise ValidationError("이미 존재하는 태그입니다.")
         return name
 
     def save(self, commit=True):
