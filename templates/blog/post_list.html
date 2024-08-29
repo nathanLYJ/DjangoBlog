@@ -12,9 +12,12 @@
                         {{ post.title }}
                     </a>
                 </h2>
+                {% if post.thumb_image %}
+                <img src="{{ post.thumb_image.url }}" alt="{{ post.title }}" class="w-full h-48 object-cover mb-2">
+                {% endif %}
                 <p>{{ post.content|truncatewords:30 }}</p>
                 <div class="text-sm text-gray-500">
-                    <p>작성자: {{ post.user }}</p>
+                    <p>작성자: {{ post.user.profile.nickname }}</p>
                     <p>작성일: {{ post.created_at|date:"Y-m-d H:i" }}</p>
                     <p>조회수: {{ post.view_count }}회 · {{ post.created_at|timesince }} 전</p>
                 </div>
