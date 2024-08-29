@@ -38,14 +38,10 @@
             {% endif %}
         {% endfor %}
         
-        <div class="mb-4">
-            <label class="block text-gray-700 text-sm font-bold mb-2" for="tag-input">
-                태그
-            </label>
-            <div class="flex items-center">
-                <input type="text" id="tag-input" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                <button type="button" id="add-tag" class="ml-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">추가</button>
-            </div>
+        <div>
+            <label for="id_tags">태그:</label>
+            <input type="text" name="tags" id="id_tags" value="{{ form.tags.value|default:'' }}">
+            <small>{{ form.tags.help_text }}</small>
         </div>
         <div class="flex items-center justify-between">
             <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
