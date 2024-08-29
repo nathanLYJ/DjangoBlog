@@ -24,7 +24,7 @@
             <ul class="flex gap-2">
                 {% if user.is_authenticated %}
                     <li><a href="{% url 'blog:post_new' %}" class="inline-block border border-gray-300 rounded px-4 py-2 text-sm hover:bg-gray-100">글쓰기</a></li>
-                    <li><a href="{% url 'accounts:profile' %}" class="inline-block border border-gray-300 rounded px-4 py-2 text-sm hover:bg-gray-100">프로필</a></li>
+                    <li><a href="{% url 'blog:profile' %}" class="inline-block border border-gray-300 rounded px-4 py-2 text-sm hover:bg-gray-100">프로필</a></li>
                     <li>
                         <form action="{% url 'accounts:logout' %}" method="post" class="inline">
                             {% csrf_token %}
