@@ -1,7 +1,7 @@
 from django import forms
 from django.core.exceptions import ValidationError
 from django.core.validators import FileExtensionValidator
-from .models import Post, Comment, Tag, Category, UserProfile
+from .models import Post, Comment, Tag, Category
 
 
 class ProfanityFilterMixin:
@@ -143,10 +143,15 @@ class TagForm(BaseForm):
         name = self.cleaned_data["name"]
         if name.startswith("#"):
             name = name[1:]
-        name = name.lower()
-        if Tag.objects.filter(name=name).exists():
-            raise ValidationError("이미 존재하는 태그입니다.")
+        name = name.lower().strip()
         return name
+
+    def save(self, commit=True):
+        instance = super().save(commit=False)
+        instance.slug = slugify(instance.name, allow_unicode=True)
+        if commit:
+            instance.save()
+        return instance
 
 
 class CategoryForm(BaseForm):
@@ -159,23 +164,3 @@ class CategoryForm(BaseForm):
         if Category.objects.filter(slug=slug).exists():
             raise ValidationError("이미 사용 중인 슬러그입니다.")
         return slug
-
-
-class UserProfileForm(BaseForm):
-    class Meta:
-        model = UserProfile
-        fields = ["nickname", "introduction", "image", "address", "birth_date"]
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields["birth_date"].widget = forms.DateInput(attrs={"type": "date"})
-
-    def clean_nickname(self):
-        nickname = self.cleaned_data.get("nickname")
-        if (
-            UserProfile.objects.filter(nickname=nickname)
-            .exclude(pk=self.instance.pk)
-            .exists()
-        ):
-            raise ValidationError("이미 사용 중인 닉네임입니다.")
-        return nickname
