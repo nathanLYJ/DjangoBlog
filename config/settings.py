@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+from dotenv import dotenv_values
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -39,6 +40,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "accounts",
     "blog",
+    "chatgpt",
 ]
 
 MIDDLEWARE = [
@@ -128,6 +130,14 @@ STATICFILES_DIRS = [
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
 LOGOUT_REDIRECT_URL = "/"  # 로그아웃 후 메인 페이지로 리디렉션
+
+
+# .env 파일의 환경 변수를 딕셔너리로 로드
+config = dotenv_values(".env")
+
+# 딕셔너리에서 직접 API 키를 가져옴
+OPENAI_API_KEY = config["OPENAI_API_KEY"]

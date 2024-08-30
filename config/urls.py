@@ -9,6 +9,7 @@ urlpatterns = [
     path("", MainPageView.as_view(), name="main"),
     path("blog/", include("blog.urls")),
     path("accounts/", include("accounts.urls")),
+    path("chatgpt/", include("chatgpt.urls")),
 ]
 
 if settings.DEBUG:
