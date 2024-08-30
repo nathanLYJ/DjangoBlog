@@ -18,13 +18,9 @@ urlpatterns = [
         views.add_reply,
         name="add_reply",
     ),
-    path("categories/", views.CategoryListView.as_view(), name="category_list"),
     path(
-        "category/<slug:slug>/",
-        views.CategoryDetailView.as_view(),
-        name="category_detail",
+        "category/<int:pk>/", views.CategoryDetailView.as_view(), name="category_detail"
     ),
-    path("tag/<str:slug>/", views.TagDetailView.as_view(), name="tag_detail"),
     path("search/", views.PostSearchView.as_view(), name="post_search"),
     path("comment/<int:pk>/delete/", views.blog_comment_delete, name="delete_comment"),
 ]

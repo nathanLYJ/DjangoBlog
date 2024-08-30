@@ -79,31 +79,10 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         return self.request.user == self.get_object().user
 
 
-class CategoryListView(ListView):
-    model = Category
-    template_name = "blog/category_list.html"
-    context_object_name = "categories"
-
-
 class CategoryDetailView(DetailView):
     model = Category
     template_name = "blog/category_detail.html"
     context_object_name = "category"
-    paginate_by = 5
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        posts = self.object.posts.all().order_by("-created_at")
-        paginator = Paginator(posts, self.paginate_by)
-        page_number = self.request.GET.get("page")
-        context["posts"] = paginator.get_page(page_number)
-        return context
-
-
-class TagDetailView(DetailView):
-    model = Tag
-    template_name = "blog/tag_detail.html"
-    context_object_name = "tag"
     paginate_by = 5
 
     def get_context_data(self, **kwargs):
