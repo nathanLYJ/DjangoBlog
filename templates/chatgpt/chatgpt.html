@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>{% block title %}ChatGPT{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f0fff0;
+        }
+        .navbar {
+            background-color: white !important;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .navbar-brand {
+            color: black !important;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+{% load static %}
+<div class="container">
+    <div class="row mb-4">
+        <div class="col-md-8 mx-auto">
+            <div class="category-buttons mb-3">
+                <button class="btn btn-outline-primary active" data-target="general">일반 요약</button>
+                <button class="btn btn-outline-primary" data-target="long">긴글 요약</button>
+                <button class="btn btn-outline-primary" data-target="pdf">PDF 요약</button>
+                <button class="btn btn-outline-primary" data-target="youtube">유튜브 요약</button>
+            </div>
+            <form method="post" enctype="multipart/form-data" class="mb-4">
+                {% csrf_token %}
+                <div id="general-input" class="input-section">
+                    <div class="form-group mb-3">
+                        {{ form.text_input.label_tag }}
+                        {{ form.text_input }}
+                    </div>
+                </div>
+                <div id="long-input" class="input-section" style="display:none;">
+                    <div class="form-group mb-3">
+                        <label for="long-text">긴 텍스트 입력:</label>
+                        <textarea class="form-control" id="long-text" name="long_text" rows="10"></textarea>
+                    </div>
+                </div>
+                <div id="pdf-input" class="input-section" style="display:none;">
+                    <div class="form-group mb-3">
+                        {{ form.file_input.label_tag }}
+                        {{ form.file_input }}
+                    </div>
+                </div>
+                <div id="youtube-input" class="input-section" style="display:none;">
+                    <div class="form-group mb-3">
+                        {{ form.youtube_url.label_tag }}
+                        {{ form.youtube_url }}
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">요약 생성</button>
+            </form>
+        </div>
+    </div>
+
+    {% if summary_result %}
+        <div class="row">
+            <div class="col-md-8 mx-auto">
+                <div class="alert alert-info mt-3">
+                    <strong>요약 (영어):</strong> {{ summary_result }}
+                </div>
+                <div class="alert alert-success mt-3">
+                    <strong>요약 (한글):</strong> {{ translation_result }}
+                </div>
+            </div>
+        </div>
+    {% endif %}
+</div>
+<script src="{% static 'js/chatgpt.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
