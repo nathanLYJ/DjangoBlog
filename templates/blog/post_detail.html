@@ -92,7 +92,16 @@
         {% if user.is_authenticated %}
             <a href="{% url 'blog:add_comment' post.pk %}" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded inline-block mt-4">댓글 작성</a>
         {% else %}
-            <p>댓글을 작성하려면 <a href="{% url 'login' %}" class="text-blue-600 hover:underline">로그인</a>하세요.</p>
+            <p>댓글을 작성하려면 <a href="{% url 'accounts:user_login' %}" class="text-blue-600 hover:underline">로그인</a>하세요.</p>
+        {% endif %}
+    </div>
+    <div class="mt-8 bg-white shadow-md rounded-lg p-6">
+        {% if user.is_authenticated %}
+            <p>환영합니다, {{ user.username }}! 이제 ChatGPT 서비스 사용가능합니다.</p>
+            <a href="{% url 'chatgpt:chatgpt' %} "class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded font-bold py-2 px-4 rounded inline-block mt-4">ChatGPT service</a>
+        {% else %}
+            <p>당신은 <a href="{% url 'accounts:user_login' %}">로그인</a>해야 ChatGPT service 사용가능합니다.</p>
+            <a href="{% url 'accounts:user_login' %}" class="btn btn-primary mt-3">로그인</a>
         {% endif %}
     </div>
 </div>
