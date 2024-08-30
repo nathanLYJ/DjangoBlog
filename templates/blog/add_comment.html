@@ -1,11 +1,46 @@
 {% extends 'base.html' %}
+{% load static %}
+
 {% block title %}댓글 추가 - GjangoBlog{% endblock %}
 
 {% block content %}
-  <h2>댓글 추가</h2>
-  <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="btn btn-primary">댓글 추가</button>
-  </form>
+<div class="container mx-auto px-4 py-8 max-w-3xl">
+    <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+        <div class="px-6 py-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6">댓글 추가</h2>
+            <form method="post" class="space-y-6">
+                {% csrf_token %}
+                {% for field in form %}
+                    <div class="space-y-2">
+                        <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-gray-700">
+                            {{ field.label }}
+                        </label>
+                        {% if field.field.widget.input_type == 'text' %}
+                            <input type="text" name="{{ field.name }}" id="{{ field.id_for_label }}"
+                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                {% if field.value %}value="{{ field.value }}"{% endif %}>
+                        {% elif field.field.widget.input_type == 'textarea' %}
+                            <textarea name="{{ field.name }}" id="{{ field.id_for_label }}" rows="4"
+                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                            >{% if field.value %}{{ field.value }}{% endif %}</textarea>
+                        {% else %}
+                            {{ field }}
+                        {% endif %}
+                        {% if field.help_text %}
+                            <p class="mt-2 text-sm text-gray-500">{{ field.help_text }}</p>
+                        {% endif %}
+                        {% for error in field.errors %}
+                            <p class="mt-2 text-sm text-red-600">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+                <div class="mt-6">
+                    <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        댓글 추가
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 {% endblock %}

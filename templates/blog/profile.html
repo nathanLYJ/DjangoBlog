@@ -3,76 +3,74 @@
 {% block title %}{{ user.username }}의 프로필 - DjangoBlog{% endblock %}
 
 {% block content %}
-<div class="container mx-auto mt-8 px-4">
-    <div class="max-w-md mx-auto bg-white shadow-md rounded-lg overflow-hidden">
+<div class="max-width">
+    <div class="bg-white shadow-md rounded-lg overflow-hidden">
         <div class="p-6">
             <h1 class="text-2xl font-bold mb-6 text-center">개인 프로필 페이지</h1>
             
             <div class="space-y-4">
-                <div class="grid grid-cols-1 gap-4">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">사용자 이름:</label>
-                        <p class="text-gray-900">{{ user.username }}</p>
+                <div class="grid gap-4">
+                    <div class="flex">
+                        <label class="font-medium w-40">사용자 이름</label>
+                        <span>: {{ user.username }}</span>
                     </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">이메일:</label>
-                        <p class="text-gray-900">{{ user.email }}</p>
+                    <div class="flex">
+                        <label class="font-medium w-40">이메일</label>
+                        <span>: {{ user.email }}</span>
                     </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">이름:</label>
-                        <p class="text-gray-900">{{ user.first_name }} {{ user.last_name }}</p>
+                    <div class="flex">
+                        <label class="font-medium w-40">가입 일자</label>
+                        <span>: {{ user.date_joined|date:"Y년 m월 d일" }}</span>
                     </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">가입 일자:</label>
-                        <p class="text-gray-900">{{ user.date_joined|date:"Y년 m월 d일" }}</p>
+                    <div class="flex">
+                        <label class="font-medium w-40">최근 로그인</label>
+                        <span>: {{ user.last_login|date:"Y년 m월 d일 H:i" }}</span>
                     </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">마지막 로그인:</label>
-                        <p class="text-gray-900">{{ user.last_login|date:"Y년 m월 d일 H:i" }}</p>
-                    </div>
-
+            
                     <!-- Custom UserProfile fields -->
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">닉네임:</label>
-                        <p class="text-gray-900">{{ user.profile.nickname }}</p>
+                    <div class="flex">
+                        <label class="font-medium w-40">닉네임</label>
+                        <span>: {{ user.profile.nickname }}</span>
                     </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">주소:</label>
-                        <p class="text-gray-900">{{ user.profile.address }}</p>
+                    <div class="flex">
+                        <label class="font-medium w-40">주소</label>
+                        <span>: {{ user.profile.address }}</span>
                     </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">생년월일:</label>
-                        <p class="text-gray-900">{{ user.profile.birth_date|date:"Y년 m월 d일" }}</p>
+                    <div class="flex">
+                        <label class="font-medium w-40">생년월일</label>
+                        <span>: {{ user.profile.birth_date|date:"Y년 m월 d일" }}</span>
                     </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">자기소개:</label>
-                        <p class="text-gray-900">{{ user.profile.introduction }}</p>
+                    <div class="flex">
+                        <label class="font-medium w-40">자기소개</label>
+                        <p>: {{ user.profile.introduction }}</p>
                     </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">프로필 사진:</label>
-                        {% if user.profile.image %}
-                            <img src="{{ user.profile.image.url }}" alt="프로필 사진" class="w-32 h-32 rounded-full mx-auto">
-                        {% else %}
-                            <p class="text-gray-500">프로필 사진이 없습니다.</p>
-                        {% endif %}
+                    <div class="flex">
+                        <label class="font-medium w-40">프로필 사진:</label>
+                        <div>
+                            {% if user.profile.image %}
+                                <img src="{{ user.profile.image.url }}" alt="프로필 사진" class="max-w-xs">
+                            {% else %}
+                                <p>프로필 사진이 없습니다.</p>
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
                 
                 {% if user.is_staff or user.is_superuser %}
                     <div class="mt-6 p-4 bg-gray-100 rounded-md">
                         <h2 class="text-lg font-semibold mb-2 text-center">관리자 정보</h2>
-                        <div class="grid grid-cols-1 gap-4">
+                        <div class="grid gap-4">
                             <div>
-                                <label class="block text-sm font-medium text-gray-700">직원 여부:</label>
-                                <p class="text-gray-900">{% if user.is_staff %}예{% else %}아니오{% endif %}</p>
+                                <label class="block font-medium">직원 여부:</label>
+                                <p>{% if user.is_staff %}예{% else %}아니오{% endif %}</p>
                             </div>
                             <div>
-                                <label class="block text-sm font-medium text-gray-700">슈퍼유저 여부:</label>
-                                <p class="text-gray-900">{% if user.is_superuser %}예{% else %}아니오{% endif %}</p>
+                                <label class="block font-medium">슈퍼유저 여부:</label>
+                                <p>{% if user.is_superuser %}예{% else %}아니오{% endif %}</p>
                             </div>
                             <div>
-                                <label class="block text-sm font-medium text-gray-700">계정 활성화 여부:</label>
-                                <p class="text-gray-900">{% if user.is_active %}예{% else %}아니오{% endif %}</p>
+                                <label class="block font-medium">계정 활성화 여부:</label>
+                                <p>{% if user.is_active %}예{% else %}아니오{% endif %}</p>
                             </div>
                         </div>
                     </div>
@@ -82,7 +80,7 @@
     </div>
     
     <div class="mt-6 text-center">
-        <a href="{% url 'accounts:profile_update' %}" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+        <a href="{% url 'accounts:profile_update' %}" class="button">
             프로필 수정
         </a>
     </div>
