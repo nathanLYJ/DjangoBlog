@@ -3,10 +3,8 @@
 {% block title %}회원가입 - GjangoBlog{% endblock %}
 
 {% block content %}
-<div class="container mx-auto mt-8 px-4">
-    <div class="max-w-md mx-auto bg-white shadow-md rounded-lg overflow-hidden">
-        <div class="p-6">
-            <h1 class="text-2xl font-bold mb-6 text-center">회원가입</h1>
+        <div class="p-6" style="background-color:  rgba(233, 233, 233, 0.5);">
+            <h1 class="text-4xl font-bold mb-6 text-center">회원가입</h1>
             
             <form method="post" class="space-y-4">
                 {% csrf_token %}
@@ -22,7 +20,7 @@
                 {% for field in form %}
                     {% if field.name != 'password_based_authentication' %}
                         <div class="space-y-2">
-                            <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-gray-700">
+                            <label for="{{ field.id_for_label }}" class="block text-2xl font-medium text-gray-700">
                                 {{ field.label }}
                             </label>
                             {{ field }}
@@ -48,9 +46,12 @@
             </form>
             
             <div class="mt-4 text-center">
-                <a href="{% url 'accounts:user_login' %}" class="text-sm text-blue-500 hover:text-blue-700">이미 계정이 있으신가요? 로그인</a>
+                <a href="{% url 'accounts:user_login' %}" class="text-
+                
+                
+                
+                
+                text-blue-500 hover:text-blue-700">이미 계정이 있으신가요? 로그인</a>
             </div>
         </div>
-    </div>
-</div>
 {% endblock %}

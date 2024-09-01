@@ -97,12 +97,11 @@
             {% endblock %}
             <aside class="about">
                 <h2>About Me</h2>
-                {% if user.profile.image.url %}
-					<img src="{{ user.profile.image.url }}" alt="" class="top-1/2 left-1/2 overflow-hidden rounded-full flex items-center justify-center" />
+                {% if user.profile.image  %}
+					<img src="{{ user.profile.image.url  }}" alt="" class="top-1/2 left-1/2 overflow-hidden rounded-full flex items-center justify-center" />
 					<p class="user-name">{{ user.username }}</p>
-					<p class="user-description">친구 (1)</p>
                 {% else %}
-                <img src="{% static '/images/profile.jpg' %}" alt="기본 프로필 사진">
+                    <img src="{% static '/images/profile.jpg' %}" alt="기본 프로필 사진">
                 {% endif %}
                 <h3>카테고리</h3>
                 <ul class="categories">
