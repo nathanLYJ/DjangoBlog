@@ -1,5 +1,22 @@
 # DjangoBlog Project
 
+## 기능 명세서
+### 1. 사용자 관리
+  * 회원가입
+  * 로그인/로그아옷
+  * 프로필&프로필 수정
+  * 비밀번호 변경
+
+### 2. 블로그 관리
+  * 포스트 생성/수정/삭제
+  * 이미지/파일 업로드
+  * 카테고리 분류(관리자), 태그 분류(사용자)
+  * 조회수 기능, 작성일 최신순
+  * 댓글, 답글 (유저인증-삭제)
+  * 검색 기능
+
+### 3. AI 도우미
+  * AI 요약
 ## ERD
 [![ERD](https://github.com/nathanLYJ/NathanLYJ/blob/main/attackment/DjangoBlog_ERD.PNG)](https://dbdiagram.io/d/66cd67353f611e76e993d6c2)
 
