@@ -29,8 +29,14 @@
 ## Blog
 ![blog_logout](https://github.com/nathanLYJ/NathanLYJ/blob/main/attackment/%EB%A1%9C%EA%B7%B8%EC%9D%B8%ED%9B%84%20blog%20%ED%99%94%EB%A9%B4.PNG)
 
-## Blog_detail
-![blog_detail](https://github.com/nathanLYJ/NathanLYJ/blob/main/attackment/%EB%B8%94%EB%A1%9C%EA%B7%B8%20%EC%83%81%EC%84%B8%2C%20%EB%8C%93%EA%B8%80%2C%20%EB%8B%B5%EA%B8%80.PNG)
+## Blog_detail $ Blog_edit 폼 동일
+![blog_detail](https://github.com/nathanLYJ/NathanLYJ/blob/main/attackment/%ED%8F%AC%EC%8A%A4%ED%8A%B8%20%ED%99%94%EB%A9%B4.PNG)
+
+## Blog_detail_user1
+![blog_detail1](https://github.com/nathanLYJ/NathanLYJ/blob/main/attackment/%EB%B8%94%EB%A1%9C%EA%B7%B8%20%EC%83%81%EC%84%B8%2C%20%EB%8C%93%EA%B8%80%2C%20%EB%8B%B5%EA%B8%80.PNG)
+
+## Blog_detail_user2
+![blog_detail2](https://github.com/nathanLYJ/NathanLYJ/blob/main/attackment/post_detail_user2.PNG)
 
 ## Blog_signup
 ![blog_signup](https://github.com/nathanLYJ/NathanLYJ/blob/main/attackment/%ED%9A%8C%EC%9B%90%20%EA%B0%80%EC%9E%85.PNG)
