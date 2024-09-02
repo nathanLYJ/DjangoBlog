@@ -1,12 +1,12 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic.edit import FormView
-from .forms import ChatForm
 from openai import OpenAI
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.conf import settings
+from django.views.generic.edit import FormView
 from django.views.generic import TemplateView
 import fitz  # PyMuPDF
 from youtube_transcript_api import YouTubeTranscriptApi
 from .models import SearchHistory
+from .forms import ChatForm
 
 client = OpenAI(api_key=settings.OPENAI_API_KEY)
 
