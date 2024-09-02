@@ -1,7 +1,8 @@
 from django.urls import path
+from django.contrib.auth.views import PasswordChangeDoneView
 from . import views
 from .views import UserSignupView, CustomLoginView, CustomPasswordChangeView
-from django.contrib.auth.views import PasswordChangeDoneView
+
 
 app_name = "accounts"
 

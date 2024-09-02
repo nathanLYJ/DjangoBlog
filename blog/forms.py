@@ -1,8 +1,8 @@
 from django import forms
 from django.core.exceptions import ValidationError
 from django.core.validators import FileExtensionValidator
-from .models import Post, Comment, Tag, Category
 from django.utils.text import slugify
+from .models import Post, Comment, Tag, Category
 
 
 class ProfanityFilterMixin:

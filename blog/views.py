@@ -1,15 +1,15 @@
-from django.views.generic import TemplateView, ListView, DetailView
-from django.shortcuts import render, get_object_or_404, redirect
-from .models import Post, Category, Tag
-from .forms import PostForm, CommentForm
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.decorators import login_required
-from django.db.models import Q, F
-from .models import Comment
 from django.core.paginator import Paginator
+from django.db.models import Q, F
 from django.db import transaction
+from django.urls import reverse_lazy
+from django.views.generic import TemplateView, ListView, DetailView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.shortcuts import render, get_object_or_404, redirect
+from .models import Comment
+from .models import Post, Category, Tag
+from .forms import PostForm, CommentForm
 
 
 # 메인 페이지
