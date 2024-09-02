@@ -70,7 +70,7 @@ class CustomPasswordChangeView(LoginRequiredMixin, PasswordChangeView):
     template_name = "accounts/password_change.html"
     success_url = reverse_lazy(
         "accounts:profile"
-    )  # 비밀번호 변경 후 프로필 페이지로 이동
+    )
 
     def form_valid(self, form):
         messages.success(self.request, "비밀번호가 성공적으로 변경되었습니다.")

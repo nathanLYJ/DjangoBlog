@@ -118,7 +118,7 @@ def add_comment(request, pk):
         if form.is_valid():
             comment = form.save(commit=False)
             comment.post = post
-            comment.user = request.user  # User 모델을 직접 사용
+            comment.user = request.user  
             comment.save()
             return redirect("blog:post_detail", pk=post.pk)
     else:
@@ -149,7 +149,7 @@ def add_reply(request, post_pk, comment_pk):
 @login_required
 def blog_comment_delete(request, pk):
     comment = get_object_or_404(Comment, pk=pk)
-    if request.user == comment.user:  # User 모델로 비교
+    if request.user == comment.user:
         post_pk = comment.post.pk
         comment.delete()
         return redirect("blog:post_detail", pk=post_pk)
