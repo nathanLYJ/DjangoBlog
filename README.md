@@ -1,6 +1,15 @@
 # DjangoBlog Project
 
-## 기능 명세서
+
+## 목표
+  1. 협업 - 간접체험 주어진 UI, CSS, 요구사항 등 똑같히 구현하려고 노력했습니다. (쉬울거라고 예상했지만 의외로 정말 너무 힘들었습니다)
+  2. 기본 CBV - 대부분, 일부FBV
+  3. 3단계
+    * 구현 완료 - 메인페이지, 회원가입 기능, 로그인 기능, 게시글 작성 기능 구현, 게시글 목록 기능 구현, 게시글 상세보기 기능 구현, 게시글 검색 기능 구현, 게시글 수정 기능 구현, 게시글 삭제 기능 구현, 회원 관련 추가 기능, 댓글 기능, 정적 파일 정리.
+    * 미구현 - 번역기능, html 17개 (한글/영어)
+    * 선택사항 - 배포X, AI요약 기능O.
+
+## 기능 명세
 ### 1. 사용자 관리
   * 회원가입
   * 로그인/로그아옷
@@ -63,16 +72,20 @@
 ## Blog_detail $ Blog_edit 폼 동일
 ![blog_detail](https://github.com/nathanLYJ/NathanLYJ/blob/main/attackment/%ED%8F%AC%EC%8A%A4%ED%8A%B8%20%ED%99%94%EB%A9%B4.PNG)
 
-## Blog_detail_user1
+## Blog_detail_user 타인 포스트 시점
 ![blog_detail1](https://github.com/nathanLYJ/NathanLYJ/blob/main/attackment/%EB%B8%94%EB%A1%9C%EA%B7%B8%20%EC%83%81%EC%84%B8%2C%20%EB%8C%93%EA%B8%80%2C%20%EB%8B%B5%EA%B8%80.PNG)
 
-## Blog_detail_user2
+## Blog_detail_user 본인 포스트 시점
 ![blog_detail2](https://github.com/nathanLYJ/NathanLYJ/blob/main/attackment/post_detail_user2.PNG)
 
 ## Blog_signup
 ![blog_signup](https://github.com/nathanLYJ/NathanLYJ/blob/main/attackment/%ED%9A%8C%EC%9B%90%20%EA%B0%80%EC%9E%85.PNG)
 
-## 느낌점
+## 마지막 느낌점
+   * 목표 요구한 결과물 -> 기능 테스트 -> 기획안 작성, 수정 -> 기능확인 -> 기획안 수정... -> CSS는 요구사항의Repo를 대부분사용했고 일부 커스텀 해서작성했습니다. -> 발표내용 준비.
+   * 기획안 수정& 점검에 시간 많이 소비했고, 트러블 슈팅를 끊임없이 했습니다, Commits 나중에 깜빡해서 덩어리체로 올라가고...(commits 스트레스 - 나중에 자동완성)
+   * 초반에 tailwind사용해서 UI 만들었지만, 잘 활용하지못해 화면이 단순했었고, 다시 Repo양식을 가져와 일일이 적용했습니다.  CSS 틀있어도 이걸html 적용하느라 시행착오 많이 겪었습니다.  
+   * ![사용언어](https://github.com/nathanLYJ/NathanLYJ/blob/main/attackment/%EC%82%AC%EC%9A%A9%20%EC%96%B8%EC%96%B4.PNG)
 
 
 
