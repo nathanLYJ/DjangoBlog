@@ -117,7 +117,7 @@ def add_comment(request, pk):
         if form.is_valid():
             comment = form.save(commit=False)
             comment.post = post
-            comment.user = request.user  # User 모델을 직접 사용
+            comment.user = request.user 
             comment.save()
             return redirect("blog:post_detail", pk=post.pk)
     else:
