@@ -110,8 +110,9 @@
                             <a href="{% url 'blog:category_detail' category.pk %}">{{ category.name }}
                             </a>
                         </li>
+                    {% endfor %}
                 </ul>
-                {% endfor %}
+              
                 <h3>Follow</h3>
 				<ul class="sns">
 					<li>
