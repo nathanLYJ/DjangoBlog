@@ -85,7 +85,7 @@
    * 목표 요구한 결과물 -> 기능 테스트 -> 기획안 작성, 수정 -> 기능확인 -> 기획안 수정... -> CSS는 요구사항의Repo를 대부분사용했고 일부 커스텀 해서작성했습니다. -> 발표내용 준비.
    * 기획안 수정& 점검에 시간 많이 소비했고, 트러블 슈팅를 끊임없이 했습니다, Commits 나중에 깜빡해서 덩어리체로 올라가고...(commits 스트레스 - 나중에 자동완성)
    * 초반에 tailwind사용해서 UI 만들었지만, 잘 활용하지못해 화면이 단순했었고, 다시 Repo양식을 가져와 일일이 적용했습니다.  CSS 틀있어도 이걸html 적용하느라 시행착오 많이 겪었습니다.  
-   * ![사용언어](https://github.com/nathanLYJ/NathanLYJ/blob/main/attackment/%EC%82%AC%EC%9A%A9%20%EC%96%B8%EC%96%B4.PNG)
+![사용언어](https://github.com/nathanLYJ/NathanLYJ/blob/main/attackment/%EC%82%AC%EC%9A%A9%20%EC%96%B8%EC%96%B4.PNG)
    * SQL데이터 송신 수신을 실전에서 많이 배운웠습니다
    * 평소에 몰랐던 부분을 배움&복습하고&점검 하는 경험, html/css/tailwind 많이 배웠습니다.
 
